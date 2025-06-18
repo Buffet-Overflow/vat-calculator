@@ -1,22 +1,39 @@
 pipeline {
     agent any
+    environment {
+	dockerCreds = credentials('dockerhub_login')
+	registry = "${dockerCreds_USR}/vat-calc
+	registryCredentials = "dockerhub_login"
+	dockerImage = ""
+    }
     stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/Buffet-Overflow/vat-calculator.git', branch: 'main'
-            }
+	stage('Run Tests') {
+	    steps {
+		npm 'install'
+		npm 'test'
+	    	}
         }
-        stage('Build') {
-            steps {
-                npm 'install'
-                npm 'run build'
-            }
+	stage('Build Image') {
+	    steps {
+		script {
+		    dockerImage = docker.build(registry)
+		}
+	    }
         }
-        stage('Archive') {
-            steps {
-                sh 'tar -czf build.tar.gz build'
-                archiveArtifacts 'build.tar.gz'
-            }
-        }
+	stage('Push Image') {
+	    steps {
+		script {
+		    docker.withRegistry("",registryCredentials) {
+			dockerImage.push("${env.BUILD_NUMBER}")
+			dockerImage.push("latest")
+		    }
+		}
+	    }
+	}
+	stage('Clean Up') {
+	    steps {
+		sh "docker image prune --all --force --filter 'until=48h'"
+	    }
+	}
     }
 }

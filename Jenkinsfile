@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
 	dockerCreds = credentials('dockerhub_login')
-	registry = "${dockerCreds_USR}/vat-calc
+	registry = "${dockerCreds_USR}/webserver
 	registryCredentials = "dockerhub_login"
 	dockerImage = ""
     }

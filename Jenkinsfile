@@ -3,7 +3,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/Buffet-Overflow/vat-calculator.git', branch: 'main'            }
+                git url: 'https://github.com/Buffet-Overflow/vat-calculator.git', branch: 'main'
+            }
         }
         stage('Build') {
             steps {

@@ -42,7 +42,7 @@ pipeline {
 		    withCredentials([file(credentialsId: awsCreds, variable: 'AWS_CREDENTIALS')]) {
 			sh "echo 'creds_file = \"${AWS_CREDENTIALS}\"' > terraform.tfvars"
 			sh 'terraform init'
-			sh 'terraform apply'
+			sh 'terraform apply --auto-approve'
 		    }
 		}
 	    }

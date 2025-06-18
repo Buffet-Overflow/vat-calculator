@@ -6,6 +6,10 @@ terraform {
 	}
     }
 }
+variable "creds_file" {
+    description = "AWS creds for terraform"
+    type = string
+}
 provider "aws" {
     shared_credentials_files = [var.creds_file]
     region = "us-east-1"

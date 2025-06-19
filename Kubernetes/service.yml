@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: vat-calc-service
+    labels:
+	app: vat-calc
+spec:
+    ports:
+      - port: 80
+	targetPort:80
+    selector:
+	app: vat-calc
+    type: LoadBalancer
